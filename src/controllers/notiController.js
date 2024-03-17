@@ -1,18 +1,22 @@
 const NotiService = require('../services/NotiService');
-
+const { getTemplate } = require('../utils/getTemplate');
 
 const NotiController = {
   sendNoti: async (req, res) => {
-    const { userEmail } = req.body;
-    const template = "Hello, this is a notification";
+    const { userEmail, postTitle, userName } = req.body;
 
-    console.log('sendNoti controller', userEmail, template);
-    const mailOptions = {
-      userEmail,
-      template
+    const varsObj = {
+      userName,
+      postTitle,
     };
 
-    // await NotiService.sendNoti(mailOptions);
+    const mailOptions = {
+      from: "bkrental.automail@gmail.com",
+      to: userEmail,
+      subject: 'Notification',
+      html: getTemplate('favoriteUpdated  ', { userName, postTitle }),
+    };
+
     try {
       await NotiService.sendNoti(mailOptions);
       return res.status(200).send('Email sent successfully');
