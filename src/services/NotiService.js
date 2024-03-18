@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer');
+const fs = require('fs');
 
 const NotiService = {
-  sendNoti: async ({ template, userEmail }) => {
-    console.log('sendNoti service', template, userEmail);
+  sendNoti: async (mailOptions) => {
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -10,15 +11,9 @@ const NotiService = {
         pass: "khjy rzun qcxj couj"
       }
     });
-    console.log('auth: bkrental.automail@gmail.com');
 
     try {
-      await transporter.sendMail({
-        from: process.env.SENDER_EMAIL,
-        to: userEmail,
-        subject: 'Notification',
-        text: template
-      });
+      await transporter.sendMail(mailOptions);
     } catch (error) {
       console.error('Error sending email');
       console.error(error);
