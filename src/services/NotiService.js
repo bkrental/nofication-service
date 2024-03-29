@@ -17,7 +17,7 @@ const NotiService = {
     } catch (error) {
       console.error('Error sending email');
       console.error(error);
-      return error;
+      throw error;
     };
   }
 }

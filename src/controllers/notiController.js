@@ -3,7 +3,7 @@ const { getTemplate } = require('../utils/getTemplate');
 
 const NotiController = {
   sendNoti: async (req, res) => {
-    const { userEmail, postTitle, userName } = req.body;
+    const { userEmail, postTitle, userName, template } = req.body;
 
     const varsObj = {
       userName,
@@ -14,8 +14,8 @@ const NotiController = {
       from: "bkrental.automail@gmail.com",
       to: userEmail,
       subject: 'Notification',
-      html: getTemplate('favoriteUpdated  ', { userName, postTitle }),
-    };
+      html: getTemplate(template, { userName, postTitle }),
+    }
 
     try {
       await NotiService.sendNoti(mailOptions);
