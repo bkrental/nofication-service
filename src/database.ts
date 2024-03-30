@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const DB_CONNECTION_STRING = 'mongodb://root:password@localhost:27017/bkrental-local-db?authSource=admin';
 
-const connect = async () => {
+const connect = async (): Promise<void> => {
   // const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
   console.log('DB_CONNECTION_STRING', DB_CONNECTION_STRING);
   console.log('Connecting to database...');
@@ -15,4 +15,6 @@ const connect = async () => {
   }
 }
 
-module.exports = { connect }
+export default {
+  connect
+}
