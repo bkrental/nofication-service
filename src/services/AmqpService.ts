@@ -1,13 +1,12 @@
-import amqplib, { Channel } from 'amqplib';
-import NotiService from '../services/NotiService';
-import getTemplate from '../utils/getTemplate';
-
+import amqplib, { Channel } from "amqplib";
+import NotiService from "../services/NotiService";
+import getTemplate from "../utils/getTemplate";
 
 class AmqpService {
   static instance: AmqpService | null = null;
   channel: Channel;
 
-  constructor(channel: Channel){
+  constructor(channel: Channel) {
     this.channel = channel;
   }
 
@@ -15,54 +14,37 @@ class AmqpService {
     try {
       const rabbitmqUrl = process.env.RABBITMQ_URL;
       if (!rabbitmqUrl) {
-        throw new Error('RABBITMQ_URL environment variable is not defined.');
+        throw new Error("RABBITMQ_URL environment variable is not defined.");
       }
-      const connection = await amqplib.connect(rabbitmqUrl); 
+      const connection = await amqplib.connect(rabbitmqUrl);
       const channel = await connection.createChannel();
       await channel.assertQueue(queue, {
-        durable: true
+        durable: true,
       });
 
       return new AmqpService(channel);
-
     } catch (error) {
-      console.error('Error connecting to RabbitMQ');
+      console.error("Error connecting to RabbitMQ");
       console.error(error);
     }
   }
 
   public static async getInstance() {
     if (!AmqpService.instance) {
-      const instance = await AmqpService.init('notification');
+      const instance = await AmqpService.init("notification");
       AmqpService.instance = instance || null;
     }
     return this.instance;
   }
 
-
-  public async startConsume(queueName: string) {
+  public async startConsume(queueName: string, handleMsg: (msg: any) => void) {
     try {
       if (!this.channel) {
-        throw new Error('Channel is not initialized');
+        throw new Error("Channel is not initialized");
       }
-
-      this.channel.consume(queueName, async (msg: any) => {
-        if (msg) {
-          console.log('Received message:', msg.content.toString());
-        }
-
-        const { template, userEmail, ...mailParams } = JSON.parse(msg.content.toString());
-        const mailOptions = {
-          from: `${process.env.SENDER_EMAIL}`,
-          to: userEmail,
-          subject: 'Notification',
-          html: getTemplate(template, mailParams),
-        }
-        // console.log('mailOptions:', mailOptions);
-        await NotiService.sendMail(mailOptions);      
-      });
+      await this.channel.consume(queueName, handleMsg, { noAck: false });
     } catch (error) {
-      console.log('Error sending email');
+      console.log("Error sending email");
       console.error(error);
     }
   }

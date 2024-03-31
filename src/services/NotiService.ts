@@ -1,7 +1,7 @@
 // const nodemailer = require('nodemailer');
-import nodemailer from 'nodemailer';
-
-interface MailOptions {
+import nodemailer from "nodemailer";
+import getTemplate from "../utils/getTemplate";
+interface MailOption {
   from: string;
   to: string;
   subject: string;
@@ -9,24 +9,39 @@ interface MailOptions {
 }
 
 const NotiService = {
-  sendMail: async (mailOptions: MailOptions) => {
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: `${process.env.SENDER_EMAIL}`,
-        pass: `${process.env.SENDER_EMAIL_PASSWORD}`
-      }
-    });
-
+  sendMail: async (msg: any) => {
     try {
+      // prepare mail to send
+      if (!msg) {
+        throw new Error("Message is empty");
+      }
+
+      console.log("Received message:", msg.content.toString());
+      const { template, userEmail, ...mailParams } = JSON.parse(
+        msg.content.toString()
+      );
+      const mailOptions: MailOption = {
+        from: `${process.env.SENDER_EMAIL}`,
+        to: userEmail,
+        subject: "Notification",
+        html: getTemplate(template, mailParams),
+      };
+
+      // send mail
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: `${process.env.SENDER_EMAIL}`,
+          pass: `${process.env.SENDER_EMAIL_PASSWORD}`,
+        },
+      });
       await transporter.sendMail(mailOptions);
     } catch (error) {
-      console.error('Error sending email');
+      console.error("Error sending email");
       console.error(error);
       throw error;
-    };
-  }
-}
+    }
+  },
+};
 
 export default NotiService;
