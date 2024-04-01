@@ -42,7 +42,7 @@ class AmqpService {
       if (!this.channel) {
         throw new Error("Channel is not initialized");
       }
-      await this.channel.consume(queueName, handleMsg, { noAck: false });
+      await this.channel.consume(queueName, handleMsg, { noAck: true });
     } catch (error) {
       console.log("Error sending email");
       console.error(error);

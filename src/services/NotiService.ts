@@ -20,6 +20,11 @@ const NotiService = {
       const { template, userEmail, ...mailParams } = JSON.parse(
         msg.content.toString()
       );
+
+      if (!template || !userEmail) {
+        throw new Error("Invalid message format");
+      }
+
       const mailOptions: MailOption = {
         from: `${process.env.SENDER_EMAIL}`,
         to: userEmail,
