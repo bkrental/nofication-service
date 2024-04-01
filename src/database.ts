@@ -1,20 +1,21 @@
-import mongoose from 'mongoose';
-
-const DB_CONNECTION_STRING = 'mongodb://root:password@localhost:27017/bkrental-local-db?authSource=admin';
+import mongoose from "mongoose";
 
 const connect = async (): Promise<void> => {
-  // const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
-  console.log('DB_CONNECTION_STRING', DB_CONNECTION_STRING);
-  console.log('Connecting to database...');
+  console.log("Connecting to database...");
   try {
-    await mongoose.connect(DB_CONNECTION_STRING)
-    console.log('Connected to database');
+    const connectionString = process.env.DB_CONNECTION_STRING;
+    if (!connectionString) {
+      throw new Error("DB_CONNECTION_STRING is not defined");
+    }
+
+    await mongoose.connect(connectionString);
+    console.log("Connected to database");
   } catch (error) {
-    console.error('Error connecting to database');
+    console.error("Error connecting to database");
     console.error(error);
   }
-}
+};
 
 export default {
-  connect
-}
+  connect,
+};

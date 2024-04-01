@@ -6,8 +6,6 @@ import AmqpService from "./services/AmqpService";
 import NotiService from "./services/NotiService";
 
 dotenvFlow.config();
-console.log("process.env:", process.env.RABBITMQ_URL);
-// dotenvFlow.config({path: envLocalDir});
 const app = express();
 
 const amqpIns = AmqpService.getInstance();
