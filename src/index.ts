@@ -10,7 +10,7 @@ const app = express();
 
 const amqpIns = AmqpService.getInstance();
 amqpIns?.then((instance) => {
-  instance?.startConsume("notification", NotiService.sendMail);
+  instance?.startConsume("email_queue", NotiService.sendMail);
 });
 
 app.use(parser.json());

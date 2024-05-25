@@ -8,8 +8,10 @@ RUN npm install
 
 COPY . .
 
-RUN npm install pm2 -g
+RUN npm install ts-node -g
+
+ARG NODE_ENV=production
 
 EXPOSE 5000
 
-CMD ["pm2-runtime", "src/index.js"]
+CMD ["ts-node", "src/index.ts"]
