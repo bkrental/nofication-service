@@ -4,32 +4,20 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "local": "docker-compose -f ./locals/docker-compose.yml up -d && set NODE_ENV=local&& nodemon src/index.ts",
-<<<<<<< HEAD
-    "build": "docker-compose -f ./locals/docker-compose.yml up -d && set NODE_ENV=prod&& nodemon src/index.ts",
-=======
->>>>>>> edf3297edf06de949cee6c06219a1e76ebb77f64
+    "local": "docker-compose -f ./locals/docker-compose.yml up -d && set NODE_ENV=local&& nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/amqplib": "^0.10.5",
-    "@types/nodemailer": "^6.4.14",
-<<<<<<< HEAD
     "amqplib": "^0.10.3",
-=======
->>>>>>> edf3297edf06de949cee6c06219a1e76ebb77f64
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "dotenv-flow": "^4.1.0",
     "express": "^4.18.3",
     "handlebars": "^4.7.8",
     "mongoose": "^8.2.2",
-<<<<<<< HEAD
-    "nodemailer": "^6.9.13",
-=======
->>>>>>> edf3297edf06de949cee6c06219a1e76ebb77f64
+    "nodemailer": "^6.9.12",
     "nodemon": "^3.1.0",
     "yarn": "^1.22.22"
   },
