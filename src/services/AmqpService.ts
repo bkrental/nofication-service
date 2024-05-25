@@ -81,7 +81,7 @@ class AmqpService {
       }
       await this.channel.consume(
         queueName,
-        async (msg) => {
+        async (msg: any) => {
           try {
             if (!msg) {
               throw new Error("Message is empty");
